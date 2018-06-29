@@ -1,0 +1,1 @@
+masscan 85.10.204.220/32 --capture=html[1024] -p80 --banners --output-filename internet.scan --output-format json
