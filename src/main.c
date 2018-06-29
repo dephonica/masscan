@@ -615,7 +615,8 @@ receive_thread(void *v)
                 masscan->is_capture_cert,
                 masscan->is_capture_html,
                 masscan->is_capture_heartbleed,
-				masscan->is_capture_ticketbleed);
+                masscan->is_capture_ticketbleed,
+                masscan->capture_html_limit_bytes);
         if (masscan->http_user_agent_length)
             tcpcon_set_parameter(   tcpcon,
                                     "http-user-agent",
@@ -1067,7 +1068,7 @@ main_scan(struct Masscan *masscan)
      */
     if (masscan->script.name) {
         unsigned i;
-		unsigned is_error;
+        unsigned is_error;
         script = script_lookup(masscan->script.name);
         
         /* If no ports specified on command-line, grab default ports */

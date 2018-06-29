@@ -35,6 +35,8 @@ struct Banner1
     unsigned is_ticketbleed:1;
     unsigned is_poodle_sslv3:1;
 
+    int capture_html_limit_bytes;
+
     struct ProtocolParserStream *tcp_payloads[65536];
     
     BannerParser parser[PROTO_end_of_list];

@@ -58,7 +58,8 @@ void tcpcon_set_banner_flags(struct TCP_ConnectionTable *tcpcon,
     unsigned is_capture_cert,
     unsigned is_capture_html,
     unsigned is_capture_heartbleed,
-	unsigned is_capture_ticketbleed);
+    unsigned is_capture_ticketbleed,
+    int capture_html_limit_bytes);
 
 /**
  * Gracefully destroy a TCP connection table. This is the last chance for any

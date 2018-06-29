@@ -223,6 +223,12 @@ http_parse(
         struct BannerOutput *banout,
         struct InteractiveData *more)
 {
+	if (banner1->is_capture_html &&
+		banner1->capture_html_limit_bytes > 0)
+	{
+		banout->max_output_bytes = banner1->capture_html_limit_bytes;
+	}
+
     unsigned state = pstate->state;
     unsigned i;
     unsigned state2;
@@ -365,7 +371,7 @@ http_parse(
                                    px, &next, (unsigned)length);
 
             if (banner1->is_capture_html) {
-                banout_append(banout, PROTO_HTML_FULL, &px[i], next-i);
+					banout_append(banout, PROTO_HTML_FULL, &px[i], next - i);
             }
 
             if (id != SMACK_NOT_FOUND) {

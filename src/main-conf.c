@@ -888,8 +888,17 @@ static int SET_capture(struct Masscan *masscan, const char *name, const char *va
     if (EQUALS("capture", name)) {
         if (EQUALS("cert", value))
             masscan->is_capture_cert = 1;
-        else if (EQUALS("html", value))
+        else if (EQUALSx("html", value, 4))
+        {
             masscan->is_capture_html = 1;
+            masscan->capture_html_limit_bytes = -1;
+
+            if (value[4] == '[')
+            {
+                masscan->capture_html_limit_bytes = atoi(value + 5);
+                printf("Captured HTML size limited to %d bytes\n", masscan->capture_html_limit_bytes);
+            }
+        }
         else if (EQUALS("heartbleed", value))
             masscan->is_capture_heartbleed = 1;
         else if (EQUALS("ticketbleed", value))
@@ -2017,7 +2026,7 @@ masscan_set_parameter(struct Masscan *masscan,
         if (EQUALS("heartbleed", value)) {
             masscan_set_parameter(masscan, "heartbleed", "true");
             return;
-		} else if (EQUALS("ticketbleed", value)) {
+        } else if (EQUALS("ticketbleed", value)) {
             masscan_set_parameter(masscan, "ticketbleed", "true");
             return;
         } else if (EQUALS("poodle", value) || EQUALS("sslv3", value)) {

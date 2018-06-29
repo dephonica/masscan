@@ -25,6 +25,8 @@ banout_init(struct BannerOutput *banout)
     banout->protocol = 0;
     banout->next = 0;
     banout->max_length = sizeof(banout->banner);
+	banout->current_output_bytes = 0;
+	banout->max_output_bytes = 0;
 }
 
 /***************************************************************************
@@ -296,7 +298,27 @@ banout_append(struct BannerOutput *banout, unsigned proto,
 
     if (length == AUTO_LEN)
         length = strlen((const char*)px);
-    
+
+	if (proto == PROTO_HTML_FULL)
+	{
+		if (banout->max_output_bytes > 0)
+		{
+			if (banout->current_output_bytes + length >
+				banout->max_output_bytes)
+			{
+				length = banout->max_output_bytes -
+					banout->current_output_bytes;
+			}
+		}
+
+		banout->current_output_bytes += length;
+	}
+
+	if (length <= 0)
+	{
+		return;
+	}
+
     /*
      * Get the matching record for the protocol (e.g. HTML, SSL, etc.).
      * If it doesn't already exist, add the protocol object to the linked

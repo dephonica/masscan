@@ -17,6 +17,8 @@ struct BannerOutput {
     unsigned protocol;
     unsigned length;
     unsigned max_length;
+	unsigned max_output_bytes;
+	unsigned current_output_bytes;
     unsigned char banner[200];
 };
 
